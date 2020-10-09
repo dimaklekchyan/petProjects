@@ -1,0 +1,79 @@
+<html>
+    <body>
+        <div>
+            <form method="post" action="/logout">
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                <input type="submit" value="Sign Out"/>
+            </form>
+            <span><a href="/user">Users list</a></span>
+        </div>
+        <div>
+            Добавление книги
+            <form method="post" action="/main">
+                <input type="text" name="title" placeholder="Укажите название"/>
+                <input type="text" name="author" placeholder="Укажите автора"/>
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                <button type="submit">Добавить</button>
+            </form>
+        </div>
+
+        <div>Список книг</div>
+        <form method="get" action="/main">
+            <input type="text" name="title" placeholder="Поиск по названию">
+            <input type="text" name="author" placeholder="Поиск по автору">
+            <button type="submit">Найти</button>
+        </form>
+        <div>Все книги</div>
+        {{#books}}
+        <div>
+            <b>{{id}}</b>
+            .
+            <span>{{title}}</span>
+             -
+            <span>{{author}}</span>
+            <form method="post" action="/main/{{id}}">
+                <input type="hidden" name="id" value="{{id}}">
+                <p><select size="3" multiple name="status">
+                    <option disabled>Выберите статус</option>
+                    <option value="readed">Прочитал</option>
+                    <option value="read">Читаю</option>
+                    <option value="want">Хочу прочитать</option>
+                </select></p>
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                <p><input type="submit" value="Изменить"></p>
+            </form>
+        </div>
+        {{/books}}
+
+        <div>Прочитал</div>
+        {{#readed}}
+            <div>
+                <b>{{id}}</b>
+                .
+                <span>{{title}}</span>
+                -
+                <span>{{author}}</span>
+            </div>
+        {{/readed}}
+        <div>Читаю</div>
+        {{#inProgress}}
+            <div>
+                <b>{{id}}</b>
+                .
+                <span>{{title}}</span>
+                -
+                <span>{{author}}</span>
+            </div>
+        {{/inProgress}}
+        <div>Хочу прочитать</div>
+        {{#wantToRead}}
+            <div>
+                <b>{{id}}</b>
+                .
+                <span>{{title}}</span>
+                -
+                <span>{{author}}</span>
+            </div>
+        {{/wantToRead}}
+    </body>
+</html>
