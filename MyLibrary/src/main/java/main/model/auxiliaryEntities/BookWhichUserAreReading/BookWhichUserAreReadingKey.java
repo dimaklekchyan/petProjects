@@ -1,4 +1,4 @@
-package main.model.auxiliaryEntities.inProgressBook;
+package main.model.auxiliaryEntities.BookWhichUserWantToRead;
 
 import main.model.Book;
 import main.model.User;
@@ -8,17 +8,17 @@ import javax.persistence.OneToOne;
 import java.io.Serializable;
 
 @Embeddable
-public class InProgressBookKey implements Serializable {
+public class BookWhichUserWantToReadKey implements Serializable {
 
     @OneToOne
     private Book book;
     @OneToOne
     private User user;
 
-    public InProgressBookKey() {
+    public BookWhichUserWantToReadKey() {
     }
 
-    public InProgressBookKey(Book book, User user) {
+    public BookWhichUserWantToReadKey(Book book, User user) {
         this.book = book;
         this.user = user;
     }
