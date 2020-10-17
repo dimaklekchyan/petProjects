@@ -2,20 +2,19 @@ package main.controller;
 
 import main.model.Book;
 import main.model.User;
-import main.model.auxiliaryEntities.inProgressBook.InProgressBook;
-import main.model.auxiliaryEntities.inProgressBook.InProgressBookKey;
-import main.model.auxiliaryEntities.readedBook.ReadedBook;
-import main.model.auxiliaryEntities.readedBook.ReadedBookKey;
-import main.model.auxiliaryEntities.usersBooks.UsersBooks;
-import main.model.auxiliaryEntities.usersBooks.UsersBooksKey;
-import main.model.auxiliaryEntities.wantToReadBook.WantToReadBook;
-import main.model.auxiliaryEntities.wantToReadBook.WantToReadBookKey;
+import main.model.auxiliaryEntities.BookWhichUserAreReading.BookWhichUserAreReading;
+import main.model.auxiliaryEntities.BookWhichUserAreReading.BookWhichUserAreReadingKey;
+import main.model.auxiliaryEntities.BookWhichUserFinished.BookWhichUserFinished;
+import main.model.auxiliaryEntities.BookWhichUserFinished.BookWhichUserFinishedKey;
+import main.model.auxiliaryEntities.BookWhichUserWantToRead.BookWhichUserWantToRead;
+import main.model.auxiliaryEntities.BookWhichUserWantToRead.BookWhichUserWantToReadKey;
 import main.repository.BookRepository;
 import main.repository.UserRepository;
-import main.repository.auxiliaryRepository.InProgressRepository;
-import main.repository.auxiliaryRepository.ReadedRepository;
-import main.repository.auxiliaryRepository.UsersBooksRepository;
-import main.repository.auxiliaryRepository.WantToReadRepository;
+import main.repository.auxiliaryRepository.BookWhichUserAreReadingRepository;
+import main.repository.auxiliaryRepository.BookWhichUserFinishedRepository;
+import main.repository.auxiliaryRepository.UsersBookRepository;
+import main.repository.auxiliaryRepository.BookWhichUserWantToReadRepository;
+import main.service.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,13 +34,13 @@ public class MainController {
     @Autowired
     private BookRepository bookRepository;
     @Autowired
-    private UsersBooksRepository usersBooksRepository;
+    private UsersBookRepository usersBookRepository;
     @Autowired
-    private InProgressRepository inProgressRepository;
+    private BookWhichUserAreReadingRepository bookWhichUserAreReadingRepository;
     @Autowired
-    private ReadedRepository readedRepository;
+    private BookWhichUserFinishedRepository bookWhichUserFinishedRepository;
     @Autowired
-    private WantToReadRepository wantToReadRepository;
+    private BookWhichUserWantToReadRepository bookWhichUserWantToReadRepository;
 
 
     @GetMapping("/")
@@ -56,27 +54,17 @@ public class MainController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String author,
             Model model){
-        List<Book> allBooks = userRepository.findByUsername(user.getUsername()).getBooks();
-        List<Book> wantToRead = userRepository.findByUsername(user.getUsername()).getWantToRead();
-        List<Book> inProgress = userRepository.findByUsername(user.getUsername()).getInProgress();
-        List<Book> readed = userRepository.findByUsername(user.getUsername()).getReaded();
+        List<Book> booksWhichUserWantToRead = userRepository.findByUsername(user.getUsername()).getBooksWhichUserWantToRead();
+        List<Book> booksWhichUserAreReading = userRepository.findByUsername(user.getUsername()).getBooksWhichUserAreReading();
+        List<Book> booksWhichUserFinished = userRepository.findByUsername(user.getUsername()).getBooksWhichUserFinished();
 
-        List<Book> filteredBooks = new ArrayList<>();
-        filteredBooks.addAll(allBooks);
-        if(title != null && !title.isEmpty()){
-            filtration(allBooks, filteredBooks, title);
-        }
-        if(author != null && !author.isEmpty()){
-            filtration(allBooks, filteredBooks, author);
-        }
+        booksWhichUserWantToRead = Filter.filtration(title, author, booksWhichUserWantToRead);
+        booksWhichUserAreReading = Filter.filtration(title, author, booksWhichUserAreReading);
+        booksWhichUserFinished = Filter.filtration(title, author, booksWhichUserFinished);
 
-        model.addAttribute("filterTitle", title);
-        model.addAttribute("filterAuthor", author);
-        model.addAttribute("books", filteredBooks);
-        model.addAttribute("wantToRead", wantToRead);
-        model.addAttribute("inProgress", inProgress);
-        model.addAttribute("readed", readed);
-
+        model.addAttribute("wantsToRead", booksWhichUserWantToRead);
+        model.addAttribute("isReading", booksWhichUserAreReading);
+        model.addAttribute("read", booksWhichUserFinished);
         return "main";
     }
 
@@ -84,10 +72,11 @@ public class MainController {
     public String create(
             @AuthenticationPrincipal User user,
             @RequestParam String title,
-            @RequestParam String author){
-        Book book = new Book(title, author);
-        bookRepository.save(book);
-        usersBooksRepository.save(new UsersBooks(new UsersBooksKey(book, user)));
+            @RequestParam String author,
+            Model model){
+
+        List<Book> suitableBooks = bookRepository.findByTitleOrAuthor(title, author);
+        model.addAttribute("suitableBooks", suitableBooks);
         return "redirect:/main";
     }
 
@@ -97,51 +86,40 @@ public class MainController {
             @RequestParam int id,
             @RequestParam String status,
             Model model){
-        Book book;
+        Book book = bookRepository.findById(id);
         switch (status){
             case "want":
-                book = bookRepository.findById(id);
-                checkingTheBookAgainstLists(inProgressRepository, readedRepository, wantToReadRepository, userRepository, book, user);
-                wantToReadRepository.save(new WantToReadBook(new WantToReadBookKey(book, user)));
+                checkingTheBookAgainstLists(bookWhichUserAreReadingRepository, bookWhichUserFinishedRepository, bookWhichUserWantToReadRepository, userRepository, book, user);
+                bookWhichUserWantToReadRepository.save(new BookWhichUserWantToRead(new BookWhichUserWantToReadKey(book, user)));
                 break;
             case "read":
-                book = bookRepository.findById(id);
-                checkingTheBookAgainstLists(inProgressRepository, readedRepository, wantToReadRepository, userRepository, book, user);
-                inProgressRepository.save(new InProgressBook(new InProgressBookKey(book, user)));
+                checkingTheBookAgainstLists(bookWhichUserAreReadingRepository, bookWhichUserFinishedRepository, bookWhichUserWantToReadRepository, userRepository, book, user);
+                bookWhichUserAreReadingRepository.save(new BookWhichUserAreReading(new BookWhichUserAreReadingKey(book, user)));
                 break;
             case "readed":
-                book = bookRepository.findById(id);
-                checkingTheBookAgainstLists(inProgressRepository, readedRepository, wantToReadRepository, userRepository, book, user);
-                readedRepository.save(new ReadedBook(new ReadedBookKey(book, user)));
+                checkingTheBookAgainstLists(bookWhichUserAreReadingRepository, bookWhichUserFinishedRepository, bookWhichUserWantToReadRepository, userRepository, book, user);
+                bookWhichUserFinishedRepository.save(new BookWhichUserFinished(new BookWhichUserFinishedKey(book, user)));
                 break;
         }
         return "redirect:/main";
     }
 
-    private static void checkingTheBookAgainstLists(InProgressRepository inProgressRepository,
-                                                    ReadedRepository readedRepository,
-                                                    WantToReadRepository wantToReadRepository,
+    private static void checkingTheBookAgainstLists(BookWhichUserAreReadingRepository bookWhichUserAreReadingRepository,
+                                                    BookWhichUserFinishedRepository bookWhichUserFinishedRepository,
+                                                    BookWhichUserWantToReadRepository bookWhichUserWantToReadRepository,
                                                     UserRepository userRepository,
                                                     Book book, User user){
 
-        if(userRepository.findByUsername(user.getUsername()).getInProgress().contains(book)){
-            inProgressRepository.delete(new InProgressBook(new InProgressBookKey(book, user)));
+        if(userRepository.findByUsername(user.getUsername()).getBooksWhichUserAreReading().contains(book)){
+            bookWhichUserAreReadingRepository.delete(new BookWhichUserAreReading(new BookWhichUserAreReadingKey(book, user)));
         }
 
-        if(userRepository.findByUsername(user.getUsername()).getReaded().contains(book)){
-            readedRepository.delete(new ReadedBook(new ReadedBookKey(book, user)));
+        if(userRepository.findByUsername(user.getUsername()).getBooksWhichUserFinished().contains(book)){
+            bookWhichUserFinishedRepository.delete(new BookWhichUserFinished(new BookWhichUserFinishedKey(book, user)));
         }
 
-        if(userRepository.findByUsername(user.getUsername()).getWantToRead().contains(book)){
-            wantToReadRepository.delete(new WantToReadBook(new WantToReadBookKey(book, user)));
-        }
-    }
-
-    private static void filtration(List<Book> originalList, List<Book> finalList, String field){
-        for (Book book : originalList){
-            if(!book.getAuthor().equals(field)){
-                finalList.remove(book);
-            }
+        if(userRepository.findByUsername(user.getUsername()).getBooksWhichUserWantToRead().contains(book)){
+            bookWhichUserWantToReadRepository.delete(new BookWhichUserWantToRead(new BookWhichUserWantToReadKey(book, user)));
         }
     }
 }

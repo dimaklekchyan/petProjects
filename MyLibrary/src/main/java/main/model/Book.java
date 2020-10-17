@@ -1,6 +1,7 @@
 package main.model;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.List;
 
 @Entity
@@ -13,6 +14,8 @@ public class Book {
 
     private String title;
     private String author;
+    @Column(name="year_of_writing", nullable = true)
+    private Date yearOfWriting;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_books",
@@ -22,25 +25,25 @@ public class Book {
     private List<User> users;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "want_to_read",
+    @JoinTable(name = "books_which_users_want_to_read",
             joinColumns = {@JoinColumn(name = "book_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
-    private List<User> willRead;
+    private List<User> usersWhoWillRead;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "in_progress",
+    @JoinTable(name = "books_which_users_are_reading",
             joinColumns = {@JoinColumn(name = "book_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
-    private List<User> inProgress;
+    private List<User> usersWhoAreReading;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "readed",
+    @JoinTable(name = "books_which_users_finished",
             joinColumns = {@JoinColumn(name = "book_id")},
             inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
-    private List<User> readed;
+    private List<User> usersWhoFinished;
 
     public Book() {
     }

@@ -3,18 +3,12 @@
         <div>
             <form method="post" action="/logout">
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-                <input type="submit" value="Sign Out"/>
+                <input type="submit" value="Выйти"/>
             </form>
             <span><a href="/user">Users list</a></span>
         </div>
         <div>
-            Добавление книги
-            <form method="post" action="/main">
-                <input type="text" name="title" placeholder="Укажите название"/>
-                <input type="text" name="author" placeholder="Укажите автора"/>
-                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-                <button type="submit">Добавить</button>
-            </form>
+            <span><a href="/search">Поиск книг</a></span>
         </div>
 
         <div>Список книг</div>
@@ -23,57 +17,69 @@
             <input type="text" name="author" placeholder="Поиск по автору">
             <button type="submit">Найти</button>
         </form>
-        <div>Все книги</div>
-        {{#books}}
-        <div>
-            <b>{{id}}</b>
-            .
-            <span>{{title}}</span>
-             -
-            <span>{{author}}</span>
-            <form method="post" action="/main/{{id}}">
-                <input type="hidden" name="id" value="{{id}}">
-                <p><select size="3" multiple name="status">
-                    <option disabled>Выберите статус</option>
-                    <option value="readed">Прочитал</option>
-                    <option value="read">Читаю</option>
-                    <option value="want">Хочу прочитать</option>
-                </select></p>
-                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-                <p><input type="submit" value="Изменить"></p>
-            </form>
-        </div>
-        {{/books}}
 
         <div>Прочитал</div>
-        {{#readed}}
+        {{#read}}
             <div>
                 <b>{{id}}</b>
                 .
                 <span>{{title}}</span>
                 -
                 <span>{{author}}</span>
+                <form method="post" action="/main/{{id}}">
+                    <input type="hidden" name="id" value="{{id}}">
+                    <p><select size="3" multiple name="status">
+                        <option disabled>Выберите статус</option>
+                        <option value="readed">Прочитал</option>
+                        <option value="read">Читаю</option>
+                        <option value="want">Хочу прочитать</option>
+                    </select></p>
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                    <p><input type="submit" value="Изменить"></p>
+                </form>
             </div>
-        {{/readed}}
+        {{/read}}
         <div>Читаю</div>
-        {{#inProgress}}
+        {{#isReading}}
             <div>
                 <b>{{id}}</b>
                 .
                 <span>{{title}}</span>
                 -
                 <span>{{author}}</span>
+                <form method="post" action="/main/{{id}}">
+                    <input type="hidden" name="id" value="{{id}}">
+                    <p><select size="3" multiple name="status">
+                        <option disabled>Выберите статус</option>
+                        <option value="readed">Прочитал</option>
+                        <option value="read">Читаю</option>
+                        <option value="want">Хочу прочитать</option>
+                    </select></p>
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                    <p><input type="submit" value="Изменить"></p>
+                </form>
             </div>
-        {{/inProgress}}
+        {{/isReading}}
         <div>Хочу прочитать</div>
-        {{#wantToRead}}
+        {{#wantsToRead}}
             <div>
                 <b>{{id}}</b>
                 .
                 <span>{{title}}</span>
                 -
                 <span>{{author}}</span>
+                <form method="post" action="/main/{{id}}">
+                    <input type="hidden" name="id" value="{{id}}">
+                    <p><select size="3" multiple name="status">
+                        <option disabled>Выберите статус</option>
+                        <option value="readed">Прочитал</option>
+                        <option value="read">Читаю</option>
+                        <option value="want">Хочу прочитать</option>
+                    </select></p>
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                    <p><input type="submit" value="Изменить"></p>
+                </form>
             </div>
-        {{/wantToRead}}
+        {{/wantsToRead}}
     </body>
 </html>

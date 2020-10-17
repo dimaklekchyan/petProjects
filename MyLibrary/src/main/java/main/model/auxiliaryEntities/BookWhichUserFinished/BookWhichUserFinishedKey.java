@@ -1,4 +1,4 @@
-package main.model.auxiliaryEntities.readedBook;
+package main.model.auxiliaryEntities.BookWhichUserFinished;
 
 import main.model.Book;
 import main.model.User;
@@ -8,17 +8,17 @@ import javax.persistence.OneToOne;
 import java.io.Serializable;
 
 @Embeddable
-public class ReadedBookKey implements Serializable {
+public class BookWhichUserFinishedKey implements Serializable {
 
     @OneToOne
     private Book book;
     @OneToOne
     private User user;
 
-    public ReadedBookKey() {
+    public BookWhichUserFinishedKey() {
     }
 
-    public ReadedBookKey(Book book, User user) {
+    public BookWhichUserFinishedKey(Book book, User user) {
         this.book = book;
         this.user = user;
     }

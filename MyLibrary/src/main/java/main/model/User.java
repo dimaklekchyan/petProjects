@@ -1,5 +1,6 @@
 package main.model;
 
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Data
 public class User implements UserDetails {
 
     @Id
@@ -25,31 +27,31 @@ public class User implements UserDetails {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "book_id")}
     )
-    private List<Book> books;
+    private List<Book> allBooks;
 
     //Книги, котороые хочется прочитать
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "want_to_read",
+    @JoinTable(name = "books_which_users_want_to_read",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "book_id")}
     )
-    private List<Book> wantToRead;
+    private List<Book> booksWhichUserWantToRead;
 
     //Книги юзера в процессе
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "in_progress",
+    @JoinTable(name = "books_which_users_are_reading",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "book_id")}
     )
-    private List<Book> inProgress;
+    private List<Book> booksWhichUserAreReading;
 
     //Прочитаныне книги юзера
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "readed",
+    @JoinTable(name = "books_which_users_finished",
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "book_id")}
     )
-    private List<Book> readed;
+    private List<Book> booksWhichUserFinished;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -79,30 +81,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isActive();
-    }
-
-    public List<Book> getWantToRead() {
-        return wantToRead;
-    }
-
-    public void setWantToRead(List<Book> wantToRead) {
-        this.wantToRead = wantToRead;
-    }
-
-    public List<Book> getInProgress() {
-        return inProgress;
-    }
-
-    public void setInProgress(List<Book> inProgress) {
-        this.inProgress = inProgress;
-    }
-
-    public List<Book> getReaded() {
-        return readed;
-    }
-
-    public void setReaded(List<Book> readed) {
-        this.readed = readed;
     }
 
     public String getPassword() {
@@ -145,11 +123,35 @@ public class User implements UserDetails {
         this.username = username;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public List<Book> getAllBooks() {
+        return allBooks;
     }
 
-    public void setBooks(List<Book> books) {
-        this.books = books;
+    public void setAllBooks(List<Book> allBooks) {
+        this.allBooks = allBooks;
+    }
+
+    public List<Book> getBooksWhichUserWantToRead() {
+        return booksWhichUserWantToRead;
+    }
+
+    public void setBooksWhichUserWantToRead(List<Book> booksWhichUserWantToRead) {
+        this.booksWhichUserWantToRead = booksWhichUserWantToRead;
+    }
+
+    public List<Book> getBooksWhichUserAreReading() {
+        return booksWhichUserAreReading;
+    }
+
+    public void setBooksWhichUserAreReading(List<Book> booksWhichUserAreReading) {
+        this.booksWhichUserAreReading = booksWhichUserAreReading;
+    }
+
+    public List<Book> getBooksWhichUserFinished() {
+        return booksWhichUserFinished;
+    }
+
+    public void setBooksWhichUserFinished(List<Book> booksWhichUserFinished) {
+        this.booksWhichUserFinished = booksWhichUserFinished;
     }
 }

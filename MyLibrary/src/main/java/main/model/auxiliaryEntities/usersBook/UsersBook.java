@@ -1,4 +1,4 @@
-package main.model.auxiliaryEntities.usersBooks;
+package main.model.auxiliaryEntities.usersBook;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -8,26 +8,26 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "users_books")
-public class UsersBooks implements Serializable {
+public class UsersBook implements Serializable {
 
     @EmbeddedId
-    private UsersBooksKey key;
+    private UsersBookKey key;
 
     @Column(name = "user_id", insertable = false, updatable = false)
     private long userId;
 
-    public UsersBooks() {
+    public UsersBook() {
     }
 
-    public UsersBooks(UsersBooksKey key) {
+    public UsersBook(UsersBookKey key) {
         this.key = key;
     }
 
-    public UsersBooksKey getKey() {
+    public UsersBookKey getKey() {
         return key;
     }
 
-    public void setKey(UsersBooksKey key) {
+    public void setKey(UsersBookKey key) {
         this.key = key;
     }
 

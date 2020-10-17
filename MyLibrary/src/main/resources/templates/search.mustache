@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Spring Security Example </title>
+    </head>
+    <body>
+        <div>
+            <form method="post" action="/logout">
+                <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                <input type="submit" value="Выйти"/>
+            </form>
+        </div>
+        <span><a href="/main">Назад</a></span>
+        <div>
+            Найти книгу
+            <form method="get" action="/search">
+                <input type="text" name="title" placeholder="Укажите название"/>
+                <input type="text" name="author" placeholder="Укажите автора"/>
+                <button type="submit">Поиск</button>
+            </form>
+        </div>
+        {{#books}}
+            <div>
+                <b>{{id}}</b>
+                .
+                <span>{{title}}</span>
+                -
+                <span>{{author}}</span>
+                <form method="post" action="/search/{{id}}">
+                    <input type="hidden" name="id" value="{{id}}">
+                    <p><select size="3" multiple name="list">
+                        <option disabled>Добавить в список: </option>
+                        <option value="readed">Прочитал</option>
+                        <option value="read">Читаю</option>
+                        <option value="want">Хочу прочитать</option>
+                    </select></p>
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                    <p><input type="submit" value="Добавить"></p>
+                </form>
+            </div>
+        {{/books}}
+    </body>
+</html>

@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface UsersBooksRepository extends CrudRepository<UsersBook, Integer> {
+public interface UsersBookRepository extends CrudRepository<UsersBook, Integer> {
     List<UsersBook> findByUserId(long id);
 }
