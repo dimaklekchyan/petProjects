@@ -16,7 +16,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
     private String username;
     private String password;
     private boolean active;
@@ -43,7 +43,7 @@ public class User implements UserDetails {
             joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "book_id")}
     )
-    private List<Book> booksWhichUserAreReading;
+    private List<Book> booksWhichUserIsReading;
 
     //Прочитаныне книги юзера
     @ManyToMany(fetch = FetchType.EAGER)
@@ -107,11 +107,11 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -139,12 +139,12 @@ public class User implements UserDetails {
         this.booksWhichUserWantToRead = booksWhichUserWantToRead;
     }
 
-    public List<Book> getBooksWhichUserAreReading() {
-        return booksWhichUserAreReading;
+    public List<Book> getBooksWhichUserIsReading() {
+        return booksWhichUserIsReading;
     }
 
-    public void setBooksWhichUserAreReading(List<Book> booksWhichUserAreReading) {
-        this.booksWhichUserAreReading = booksWhichUserAreReading;
+    public void setBooksWhichUserIsReading(List<Book> booksWhichUserIsReading) {
+        this.booksWhichUserIsReading = booksWhichUserIsReading;
     }
 
     public List<Book> getBooksWhichUserFinished() {

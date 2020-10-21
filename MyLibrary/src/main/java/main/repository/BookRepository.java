@@ -1,14 +1,12 @@
 package main.repository;
 
 import main.model.Book;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Collection;
 import java.util.List;
 
-public interface BookRepository extends CrudRepository<Book, Integer> {
+public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> findByTitleOrAuthor(String title, String author);
     Book findById(long id);
-    List<Book> findByIdIn(Collection<Long> id);
 
 }

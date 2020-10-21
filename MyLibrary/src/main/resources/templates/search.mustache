@@ -19,23 +19,24 @@
                 <button type="submit">Поиск</button>
             </form>
         </div>
+        {{#message}}
+            {{message}}
+        {{/message}}
         {{#books}}
             <div>
-                <b>{{id}}</b>
-                .
                 <span>{{title}}</span>
                 -
                 <span>{{author}}</span>
                 <form method="post" action="/search/{{id}}">
                     <input type="hidden" name="id" value="{{id}}">
-                    <p><select size="3" multiple name="list">
+                    <select name="newList">
                         <option disabled>Добавить в список: </option>
-                        <option value="readed">Прочитал</option>
-                        <option value="read">Читаю</option>
-                        <option value="want">Хочу прочитать</option>
-                    </select></p>
+                        <option value="finished">Прочитал</option>
+                        <option value="isReading">Читаю</option>
+                        <option selected value="wantToRead">Хочу прочитать</option>
+                    </select>
                     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-                    <p><input type="submit" value="Добавить"></p>
+                    <input type="submit" value="Добавить">
                 </form>
             </div>
         {{/books}}

@@ -13,8 +13,10 @@ public class UsersBook implements Serializable {
     @EmbeddedId
     private UsersBookKey key;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private long userId;
+    @Column(name = "book_id", updatable = false, insertable = false)
+    private int bookId;
+    @Column(name = "user_id", updatable = false, insertable = false)
+    private int userId;
 
     public UsersBook() {
     }
@@ -31,11 +33,19 @@ public class UsersBook implements Serializable {
         this.key = key;
     }
 
-    public long getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
 }

@@ -2,17 +2,12 @@ package main.controller;
 
 import main.model.Book;
 import main.model.User;
-import main.model.auxiliaryEntities.BookWhichUserAreReading.BookWhichUserAreReading;
-import main.model.auxiliaryEntities.BookWhichUserAreReading.BookWhichUserAreReadingKey;
-import main.model.auxiliaryEntities.BookWhichUserFinished.BookWhichUserFinished;
-import main.model.auxiliaryEntities.BookWhichUserFinished.BookWhichUserFinishedKey;
-import main.model.auxiliaryEntities.BookWhichUserWantToRead.BookWhichUserWantToRead;
-import main.model.auxiliaryEntities.BookWhichUserWantToRead.BookWhichUserWantToReadKey;
+import main.model.auxiliaryEntities.usersBook.UsersBook;
+import main.model.auxiliaryEntities.usersBook.UsersBookKey;
 import main.repository.BookRepository;
 import main.repository.UserRepository;
-import main.repository.auxiliaryRepository.BookWhichUserAreReadingRepository;
-import main.repository.auxiliaryRepository.BookWhichUserFinishedRepository;
-import main.repository.auxiliaryRepository.BookWhichUserWantToReadRepository;
+import main.repository.auxiliaryRepository.UsersBookRepository;
+import main.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -31,11 +26,9 @@ public class SearchController {
     @Autowired
     private BookRepository bookRepository;
     @Autowired
-    private BookWhichUserAreReadingRepository bookWhichUserAreReadingRepository;
+    private UsersBookRepository usersBookRepository;
     @Autowired
-    private BookWhichUserFinishedRepository bookWhichUserFinishedRepository;
-    @Autowired
-    private BookWhichUserWantToReadRepository bookWhichUserWantToReadRepository;
+    private TransferService transferService;
 
     @GetMapping()
     public String searchBooks(@RequestParam(required = false) String title,
@@ -51,42 +44,15 @@ public class SearchController {
     @PostMapping("/{id}")
     public String addBookToAnyList(@AuthenticationPrincipal User user,
                                    @RequestParam int id,
-                                   @RequestParam String list,
+                                   @RequestParam String newList,
                                    Model model){
         Book book = bookRepository.findById(id);
-        switch (list){
-            case "want":
-                checkingTheBookAgainstLists(bookWhichUserAreReadingRepository, bookWhichUserFinishedRepository, bookWhichUserWantToReadRepository, userRepository, book, user);
-                bookWhichUserWantToReadRepository.save(new BookWhichUserWantToRead(new BookWhichUserWantToReadKey(book, user)));
-                break;
-            case "read":
-                checkingTheBookAgainstLists(bookWhichUserAreReadingRepository, bookWhichUserFinishedRepository, bookWhichUserWantToReadRepository, userRepository, book, user);
-                bookWhichUserAreReadingRepository.save(new BookWhichUserAreReading(new BookWhichUserAreReadingKey(book, user)));
-                break;
-            case "readed":
-                checkingTheBookAgainstLists(bookWhichUserAreReadingRepository, bookWhichUserFinishedRepository, bookWhichUserWantToReadRepository, userRepository, book, user);
-                bookWhichUserFinishedRepository.save(new BookWhichUserFinished(new BookWhichUserFinishedKey(book, user)));
-                break;
+        if(!usersBookRepository.existsById(new UsersBookKey(book, user))){
+            usersBookRepository.save(new UsersBook(new UsersBookKey(book, user)));
+            transferService.transferToAnotherList(book, user, "null", newList);
+        } else {
+            model.addAttribute("message", "Book has already been added.");
         }
         return "/search";
-    }
-
-    private static void checkingTheBookAgainstLists(BookWhichUserAreReadingRepository bookWhichUserAreReadingRepository,
-                                                    BookWhichUserFinishedRepository bookWhichUserFinishedRepository,
-                                                    BookWhichUserWantToReadRepository bookWhichUserWantToReadRepository,
-                                                    UserRepository userRepository,
-                                                    Book book, User user){
-
-        if(userRepository.findByUsername(user.getUsername()).getBooksWhichUserAreReading().contains(book)){
-            bookWhichUserAreReadingRepository.delete(new BookWhichUserAreReading(new BookWhichUserAreReadingKey(book, user)));
-        }
-
-        if(userRepository.findByUsername(user.getUsername()).getBooksWhichUserFinished().contains(book)){
-            bookWhichUserFinishedRepository.delete(new BookWhichUserFinished(new BookWhichUserFinishedKey(book, user)));
-        }
-
-        if(userRepository.findByUsername(user.getUsername()).getBooksWhichUserWantToRead().contains(book)){
-            bookWhichUserWantToReadRepository.delete(new BookWhichUserWantToRead(new BookWhichUserWantToReadKey(book, user)));
-        }
     }
 }
