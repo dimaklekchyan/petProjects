@@ -2,18 +2,18 @@ package main.service;
 
 import main.model.Book;
 import main.model.User;
-import main.model.auxiliaryEntities.BookWhichUserFinished.BookWhichUserFinished;
-import main.model.auxiliaryEntities.BookWhichUserFinished.BookWhichUserFinishedKey;
-import main.model.auxiliaryEntities.BookWhichUserIsReading.BookWhichUserIsReading;
-import main.model.auxiliaryEntities.BookWhichUserIsReading.BookWhichUserIsReadingKey;
-import main.model.auxiliaryEntities.BookWhichUserWantToRead.BookWhichUserWantToRead;
-import main.model.auxiliaryEntities.BookWhichUserWantToRead.BookWhichUserWantToReadKey;
+import main.model.BookWhichUserFinished.BookWhichUserFinished;
+import main.model.BookWhichUserFinished.BookWhichUserFinishedKey;
+import main.model.BookWhichUserIsReading.BookWhichUserIsReading;
+import main.model.BookWhichUserIsReading.BookWhichUserIsReadingKey;
+import main.model.BookWhichUserWantToRead.BookWhichUserWantToRead;
+import main.model.BookWhichUserWantToRead.BookWhichUserWantToReadKey;
 import main.repository.BookRepository;
 import main.repository.UserRepository;
-import main.repository.auxiliaryRepository.BookWhichUserFinishedRepository;
-import main.repository.auxiliaryRepository.BookWhichUserIsReadingRepository;
-import main.repository.auxiliaryRepository.BookWhichUserWantToReadRepository;
-import main.repository.auxiliaryRepository.UsersBookRepository;
+import main.repository.BookWhichUserFinishedRepository;
+import main.repository.BookWhichUserIsReadingRepository;
+import main.repository.BookWhichUserWantToReadRepository;
+import main.repository.UsersBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +40,7 @@ public class TransferService {
         saveToList(book, user, newList);
     }
 
-    private void saveToList(Book book, User user, String newList){
+    public void saveToList(Book book, User user, String newList){
         switch (newList){
             case "finished":
                 bookWhichUserFinishedRepository.save(new BookWhichUserFinished(new BookWhichUserFinishedKey(book, user)));

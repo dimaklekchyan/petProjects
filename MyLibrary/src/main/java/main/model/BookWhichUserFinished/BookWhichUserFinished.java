@@ -1,5 +1,4 @@
-package main.model.auxiliaryEntities.BookWhichUserWantToRead;
-
+package main.model.BookWhichUserFinished;
 
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
@@ -8,29 +7,29 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "books_which_users_want_to_read")
-public class BookWhichUserWantToRead implements Serializable {
+@Table(name = "books_which_users_finished")
+public class BookWhichUserFinished implements Serializable {
 
     @EmbeddedId
-    private BookWhichUserWantToReadKey key;
+    private BookWhichUserFinishedKey key;
 
     @Column(name = "book_id", updatable = false, insertable = false)
     private int bookId;
     @Column(name = "user_id", updatable = false, insertable = false)
     private int userId;
 
-    public BookWhichUserWantToRead() {
+    public BookWhichUserFinished() {
     }
 
-    public BookWhichUserWantToRead(BookWhichUserWantToReadKey key) {
+    public BookWhichUserFinished(BookWhichUserFinishedKey key) {
         this.key = key;
     }
 
-    public BookWhichUserWantToReadKey getKey() {
+    public BookWhichUserFinishedKey getKey() {
         return key;
     }
 
-    public void setKey(BookWhichUserWantToReadKey key) {
+    public void setKey(BookWhichUserFinishedKey key) {
         this.key = key;
     }
 

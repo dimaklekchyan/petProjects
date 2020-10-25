@@ -40,15 +40,6 @@ public class UserController {
             @RequestParam(required = false) Boolean ADMIN,
             Model model){
         user.setUsername(username);
-//        if(USER != null || ADMIN != null){
-//            user.getRoles().clear();
-//            if(USER){
-//                user.setRoles(Collections.singleton(Role.USER));
-//            }
-//            if(ADMIN){
-//                user.setRoles(Collections.singleton(Role.ADMIN));
-//            }
-//        }
         userRepository.save(user);
         return "redirect:/user";
     }

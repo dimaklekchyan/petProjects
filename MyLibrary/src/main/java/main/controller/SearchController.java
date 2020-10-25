@@ -2,11 +2,11 @@ package main.controller;
 
 import main.model.Book;
 import main.model.User;
-import main.model.auxiliaryEntities.usersBook.UsersBook;
-import main.model.auxiliaryEntities.usersBook.UsersBookKey;
+import main.model.usersBook.UsersBook;
+import main.model.usersBook.UsersBookKey;
 import main.repository.BookRepository;
 import main.repository.UserRepository;
-import main.repository.auxiliaryRepository.UsersBookRepository;
+import main.repository.UsersBookRepository;
 import main.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -49,7 +49,7 @@ public class SearchController {
         Book book = bookRepository.findById(id);
         if(!usersBookRepository.existsById(new UsersBookKey(book, user))){
             usersBookRepository.save(new UsersBook(new UsersBookKey(book, user)));
-            transferService.transferToAnotherList(book, user, "null", newList);
+            transferService.saveToList(book, user, newList);
         } else {
             model.addAttribute("message", "Book has already been added.");
         }

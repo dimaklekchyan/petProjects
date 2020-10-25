@@ -4,10 +4,10 @@ import main.model.Book;
 import main.model.User;
 import main.repository.BookRepository;
 import main.repository.UserRepository;
-import main.repository.auxiliaryRepository.BookWhichUserFinishedRepository;
-import main.repository.auxiliaryRepository.BookWhichUserIsReadingRepository;
-import main.repository.auxiliaryRepository.BookWhichUserWantToReadRepository;
-import main.repository.auxiliaryRepository.UsersBookRepository;
+import main.repository.BookWhichUserFinishedRepository;
+import main.repository.BookWhichUserIsReadingRepository;
+import main.repository.BookWhichUserWantToReadRepository;
+import main.repository.UsersBookRepository;
 import main.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -52,16 +52,9 @@ public class MainController {
             @RequestParam(required = false) String author,
             Model model){
 
-        List<Book> booksWhichUserWantToRead = userRepository.findByUsername(user.getUsername()).getBooksWhichUserWantToRead();
-        List<Book> booksWhichUserIsReading = userRepository.findByUsername(user.getUsername()).getBooksWhichUserIsReading();
-        List<Book> booksWhichUserFinished = userRepository.findByUsername(user.getUsername()).getBooksWhichUserFinished();
-
-
-        if((title != null && !title.isEmpty()) || (author != null && !author.isEmpty())){
-            booksWhichUserWantToRead = bookWhichUserWantToReadRepository.findByTitleOrAuthor(title, author, user.getId());
-            booksWhichUserIsReading = bookWhichUserIsReadingRepository.findByTitleOrAuthor(title, author, user.getId());
-            booksWhichUserFinished = bookWhichUserFinishedRepository.findByTitleOrAuthor(title, author, user.getId());
-        }
+        List<Book> booksWhichUserWantToRead = bookWhichUserWantToReadRepository.findByTitleOrAuthor(title, author, user.getId());
+        List<Book> booksWhichUserIsReading = bookWhichUserIsReadingRepository.findByTitleOrAuthor(title, author, user.getId());
+        List<Book> booksWhichUserFinished = bookWhichUserFinishedRepository.findByTitleOrAuthor(title, author, user.getId());
 
         model.addAttribute("wantToRead", booksWhichUserWantToRead);
         model.addAttribute("isReading", booksWhichUserIsReading);
