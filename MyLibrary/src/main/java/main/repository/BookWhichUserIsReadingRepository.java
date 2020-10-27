@@ -15,5 +15,5 @@ public interface BookWhichUserIsReadingRepository extends JpaRepository<BookWhic
             "WHERE reading.userId = :userId " +
                     "AND book.title = (CASE WHEN :title != '' THEN :title ELSE book.title END) " +
                     "AND book.author = (CASE WHEN :author != '' THEN :author ELSE book.author END)")
-    List<Book> findByTitleOrAuthor(String title, String author, int userId);
+    List<Book> findByTitleOrAuthor(String title, String author, long userId);
 }
