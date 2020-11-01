@@ -2,12 +2,7 @@ package main.controller;
 
 import main.model.Book;
 import main.model.User;
-import main.repository.BookRepository;
-import main.repository.UserRepository;
-import main.repository.BookWhichUserFinishedRepository;
-import main.repository.BookWhichUserIsReadingRepository;
-import main.repository.BookWhichUserWantToReadRepository;
-import main.repository.UsersBookRepository;
+import main.repository.*;
 import main.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -67,8 +62,7 @@ public class MainController {
             @AuthenticationPrincipal User user,
             @RequestParam int id,
             @RequestParam String oldList,
-            @RequestParam String newList,
-            Model model){
+            @RequestParam String newList){
         Book book = bookRepository.findById(id);
         transferService.transferToAnotherList(book, user, oldList, newList);
         return "redirect:/main";

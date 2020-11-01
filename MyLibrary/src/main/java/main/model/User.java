@@ -1,6 +1,7 @@
 package main.model;
 
 import lombok.Data;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,9 +10,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "users")
-@Data
 public class User implements UserDetails {
 
     @Id
@@ -85,91 +86,4 @@ public class User implements UserDetails {
         return isActive();
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
-
-    public Set<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public List<Book> getAllBooks() {
-        return allBooks;
-    }
-
-    public void setAllBooks(List<Book> allBooks) {
-        this.allBooks = allBooks;
-    }
-
-    public List<Book> getBooksWhichUserWantToRead() {
-        return booksWhichUserWantToRead;
-    }
-
-    public void setBooksWhichUserWantToRead(List<Book> booksWhichUserWantToRead) {
-        this.booksWhichUserWantToRead = booksWhichUserWantToRead;
-    }
-
-    public List<Book> getBooksWhichUserIsReading() {
-        return booksWhichUserIsReading;
-    }
-
-    public void setBooksWhichUserIsReading(List<Book> booksWhichUserIsReading) {
-        this.booksWhichUserIsReading = booksWhichUserIsReading;
-    }
-
-    public List<Book> getBooksWhichUserFinished() {
-        return booksWhichUserFinished;
-    }
-
-    public void setBooksWhichUserFinished(List<Book> booksWhichUserFinished) {
-        this.booksWhichUserFinished = booksWhichUserFinished;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getActivationCode() {
-        return activationCode;
-    }
-
-    public void setActivationCode(String activationCode) {
-        this.activationCode = activationCode;
-    }
 }

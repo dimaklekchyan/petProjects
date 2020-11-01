@@ -19,26 +19,26 @@
         </form>
         <div style="display: flex; justify-content: space-between">
             <div class="first">
-                <div>Прочитал</div>
-                {{#finished}}
+                <div>Хочу прочитать</div>
+                {{#wantToRead}}
                     <div style="border-bottom: 1px solid black;">
                         <span>{{title}}</span>
                         -
                         <span>{{author}}</span>
                         <form method="post" action="/main/{{id}}">
                             <input type="hidden" name="id" value="{{id}}">
-                            <input type="hidden" name="oldList" value="finished">
+                            <input type="hidden" name="oldList" value="wantToRead">
                             <select name="newList">
                                 <option disabled>Выберите статус</option>
-                                <option selected value="finished">Прочитал</option>
+                                <option value="finished">Прочитал</option>
                                 <option value="isReading">Читаю</option>
-                                <option value="wantToRead">Хочу прочитать</option>
+                                <option selected value="wantToRead">Хочу прочитать</option>
                             </select>
                             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
                             <input type="submit" value="Изменить">
                         </form>
                     </div>
-                {{/finished}}
+                {{/wantToRead}}
             </div>
             <div class="second">
                 <div>Читаю</div>
@@ -63,26 +63,26 @@
                 {{/isReading}}
             </div>
             <div class="third">
-                <div>Хочу прочитать</div>
-                {{#wantToRead}}
+                <div>Прочитал</div>
+                {{#finished}}
                     <div style="border-bottom: 1px solid black;">
                         <span>{{title}}</span>
                         -
                         <span>{{author}}</span>
                         <form method="post" action="/main/{{id}}">
                             <input type="hidden" name="id" value="{{id}}">
-                            <input type="hidden" name="oldList" value="wantToRead">
+                            <input type="hidden" name="oldList" value="finished">
                             <select name="newList">
                                 <option disabled>Выберите статус</option>
-                                <option value="finished">Прочитал</option>
+                                <option selected value="finished">Прочитал</option>
                                 <option value="isReading">Читаю</option>
-                                <option selected value="wantToRead">Хочу прочитать</option>
+                                <option value="wantToRead">Хочу прочитать</option>
                             </select>
                             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
                             <input type="submit" value="Изменить">
                         </form>
                     </div>
-                {{/wantToRead}}
+                {{/finished}}
             </div>
         </div>
     </body>
