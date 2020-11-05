@@ -1,5 +1,4 @@
-package main.model.BookWhichUserWantToRead;
-
+package main.model.usersBook;
 
 import lombok.Data;
 
@@ -12,11 +11,11 @@ import java.sql.Date;
 
 @Data
 @Entity
-@Table(name = "books_which_users_want_to_read")
-public class BookWhichUserWantToRead implements Serializable {
+@Table(name = "books_which_users_are_reading")
+public class BookWhichUserIsReading implements Serializable {
 
     @EmbeddedId
-    private BookWhichUserWantToReadKey key;
+    private UsersBookKey key;
 
     @Column(name = "book_id", updatable = false, insertable = false)
     private long bookId;
@@ -25,10 +24,10 @@ public class BookWhichUserWantToRead implements Serializable {
     @Column(name = "date_added")
     private Date dateAdded;
 
-    public BookWhichUserWantToRead() {
+    public BookWhichUserIsReading() {
     }
 
-    public BookWhichUserWantToRead(BookWhichUserWantToReadKey key) {
+    public BookWhichUserIsReading(UsersBookKey key) {
         this.key = key;
         this.dateAdded = new Date(System.currentTimeMillis());
     }

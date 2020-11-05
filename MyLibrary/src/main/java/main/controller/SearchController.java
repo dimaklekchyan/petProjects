@@ -6,7 +6,7 @@ import main.model.usersBook.UsersBook;
 import main.model.usersBook.UsersBookKey;
 import main.repository.BookRepository;
 import main.repository.UserRepository;
-import main.repository.UsersBookRepository;
+import main.repository.usersBook.UsersBookRepository;
 import main.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

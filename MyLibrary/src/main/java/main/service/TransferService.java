@@ -2,18 +2,16 @@ package main.service;
 
 import main.model.Book;
 import main.model.User;
-import main.model.BookWhichUserFinished.BookWhichUserFinished;
-import main.model.BookWhichUserFinished.BookWhichUserFinishedKey;
-import main.model.BookWhichUserIsReading.BookWhichUserIsReading;
-import main.model.BookWhichUserIsReading.BookWhichUserIsReadingKey;
-import main.model.BookWhichUserWantToRead.BookWhichUserWantToRead;
-import main.model.BookWhichUserWantToRead.BookWhichUserWantToReadKey;
+import main.model.usersBook.BookWhichUserFinished;
+import main.model.usersBook.BookWhichUserIsReading;
+import main.model.usersBook.BookWhichUserWantToRead;
+import main.model.usersBook.UsersBookKey;
 import main.repository.BookRepository;
 import main.repository.UserRepository;
-import main.repository.BookWhichUserFinishedRepository;
-import main.repository.BookWhichUserIsReadingRepository;
-import main.repository.BookWhichUserWantToReadRepository;
-import main.repository.UsersBookRepository;
+import main.repository.usersBook.BookWhichUserFinishedRepository;
+import main.repository.usersBook.BookWhichUserIsReadingRepository;
+import main.repository.usersBook.BookWhichUserWantToReadRepository;
+import main.repository.usersBook.UsersBookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,13 +41,13 @@ public class TransferService {
     public void saveToList(Book book, User user, String newList){
         switch (newList){
             case "finished":
-                bookWhichUserFinishedRepository.save(new BookWhichUserFinished(new BookWhichUserFinishedKey(book, user)));
+                bookWhichUserFinishedRepository.save(new BookWhichUserFinished(new UsersBookKey(book, user)));
                 break;
             case "isReading":
-                bookWhichUserIsReadingRepository.save(new BookWhichUserIsReading(new BookWhichUserIsReadingKey(book, user)));
+                bookWhichUserIsReadingRepository.save(new BookWhichUserIsReading(new UsersBookKey(book, user)));
                 break;
             case "wantToRead":
-                bookWhichUserWantToReadRepository.save(new BookWhichUserWantToRead(new BookWhichUserWantToReadKey(book, user)));
+                bookWhichUserWantToReadRepository.save(new BookWhichUserWantToRead(new UsersBookKey(book, user)));
                 break;
         }
     }
@@ -57,13 +55,13 @@ public class TransferService {
     public void removeFromList(Book book, User user, String oldList){
         switch(oldList){
             case "finished":
-                bookWhichUserFinishedRepository.delete(new BookWhichUserFinished(new BookWhichUserFinishedKey(book, user)));
+                bookWhichUserFinishedRepository.delete(new BookWhichUserFinished(new UsersBookKey(book, user)));
                 break;
             case "isReading":
-                bookWhichUserIsReadingRepository.delete(new BookWhichUserIsReading(new BookWhichUserIsReadingKey(book, user)));
+                bookWhichUserIsReadingRepository.delete(new BookWhichUserIsReading(new UsersBookKey(book, user)));
                 break;
             case "wantToRead":
-                bookWhichUserWantToReadRepository.delete(new BookWhichUserWantToRead(new BookWhichUserWantToReadKey(book, user)));
+                bookWhichUserWantToReadRepository.delete(new BookWhichUserWantToRead(new UsersBookKey(book, user)));
                 break;
             default:
                 break;

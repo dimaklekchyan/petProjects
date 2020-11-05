@@ -8,6 +8,7 @@
         <div>User editor</div>
         <form action="/user" method="post">
             <input type="text" name="username" value="{{user.username}}"/>
+            <label><input type="checkbox" name="active" value="{{user.active}}"/>Активный</label>
             <!-- Сделать автозаполнение чекбоксов-->
             {{#roles}}
                 <div>

@@ -1,4 +1,4 @@
-package main.repository;
+package main.repository.usersBook;
 
 import main.model.usersBook.UsersBook;
 import main.model.usersBook.UsersBookKey;

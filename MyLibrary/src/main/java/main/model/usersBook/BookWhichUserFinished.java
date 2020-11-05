@@ -1,4 +1,4 @@
-package main.model.BookWhichUserFinished;
+package main.model.usersBook;
 
 import lombok.Data;
 
@@ -15,7 +15,7 @@ import java.sql.Date;
 public class BookWhichUserFinished implements Serializable {
 
     @EmbeddedId
-    private BookWhichUserFinishedKey key;
+    private UsersBookKey key;
 
     @Column(name = "book_id", updatable = false, insertable = false)
     private long bookId;
@@ -27,7 +27,7 @@ public class BookWhichUserFinished implements Serializable {
     public BookWhichUserFinished() {
     }
 
-    public BookWhichUserFinished(BookWhichUserFinishedKey key) {
+    public BookWhichUserFinished(UsersBookKey key) {
         this.key = key;
         this.dateAdded = new Date(System.currentTimeMillis());
     }
