@@ -2,12 +2,10 @@ package main.controller;
 
 import main.model.Book;
 import main.model.User;
-import main.model.usersBook.UsersBook;
-import main.model.usersBook.UsersBookKey;
 import main.repository.BookRepository;
 import main.repository.UserRepository;
-import main.repository.usersBook.UsersBookRepository;
-import main.service.TransferService;
+import main.repository.UsersBookRepository;
+import main.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -28,7 +26,7 @@ public class SearchController {
     @Autowired
     private UsersBookRepository usersBookRepository;
     @Autowired
-    private TransferService transferService;
+    private BookService bookService;
 
     @GetMapping()
     public String searchBooks(@RequestParam(required = false) String title,
@@ -44,12 +42,11 @@ public class SearchController {
     @PostMapping("/{id}")
     public String addBookToAnyList(@AuthenticationPrincipal User user,
                                    @RequestParam int id,
-                                   @RequestParam String newList,
+                                   @RequestParam String targetList,
                                    Model model){
         Book book = bookRepository.findById(id);
-        if(!usersBookRepository.existsById(new UsersBookKey(book, user))){
-            usersBookRepository.save(new UsersBook(new UsersBookKey(book, user)));
-            transferService.saveToList(book, user, newList);
+        if(bookService.addToList(book, user, targetList)){
+            model.addAttribute("message", "Book added successfully!");
         } else {
             model.addAttribute("message", "Book has already been added.");
         }

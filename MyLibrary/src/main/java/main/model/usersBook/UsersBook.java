@@ -1,11 +1,9 @@
 package main.model.usersBook;
 
 import lombok.Data;
+import main.model.ListsOfBooks;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 
@@ -21,14 +19,19 @@ public class UsersBook implements Serializable {
     private long bookId;
     @Column(name = "user_id", updatable = false, insertable = false)
     private long userId;
+
+    @Enumerated(EnumType.STRING)
+    private ListsOfBooks list;
+
     @Column(name = "date_added")
     private Date dateAdded;
 
     public UsersBook() {
     }
 
-    public UsersBook(UsersBookKey key) {
+    public UsersBook(UsersBookKey key, ListsOfBooks list) {
         this.key = key;
+        this.list = list;
         this.dateAdded = new Date(System.currentTimeMillis());
     }
 }

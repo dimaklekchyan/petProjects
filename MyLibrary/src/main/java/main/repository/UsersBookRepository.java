@@ -1,0 +1,30 @@
+package main.repository;
+
+import main.model.Book;
+import main.model.ListsOfBooks;
+import main.model.usersBook.UsersBook;
+import main.model.usersBook.UsersBookKey;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
+
+public interface UsersBookRepository extends JpaRepository<UsersBook, UsersBookKey> {
+    List<UsersBook> findAll();
+
+    @Query("FROM UsersBook WHERE key = :key")
+    UsersBook findByKey(UsersBookKey key);
+
+//    @Query("DELETE FROM UsersBook " +
+//            "WHERE userId = :userId " +
+//            "AND bookId = :bookId")
+//    void delete(long bookId, long userId);
+
+    @Query("SELECT book FROM Book as book " +
+            "JOIN UsersBook as usersBook ON usersBook.bookId = book.id " +
+            "WHERE usersBook.list = :list " +
+            "AND usersBook.userId = :userId " +
+            "AND book.title = (CASE WHEN :title != '' THEN :title ELSE book.title END) " +
+            "AND book.author = (CASE WHEN :author != '' THEN :author ELSE book.author END)")
+    List<Book> findByTitleOrAuthorAndList(String title, String author, long userId, ListsOfBooks list);
+}
