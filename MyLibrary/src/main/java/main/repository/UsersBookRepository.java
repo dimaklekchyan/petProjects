@@ -2,8 +2,8 @@ package main.repository;
 
 import main.model.Book;
 import main.model.ListsOfBooks;
-import main.model.usersBook.UsersBook;
-import main.model.usersBook.UsersBookKey;
+import main.model.UsersBook;
+import main.model.UsersBookKey;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,7 +12,6 @@ import java.util.List;
 public interface UsersBookRepository extends JpaRepository<UsersBook, UsersBookKey> {
     List<UsersBook> findAll();
 
-    @Query("FROM UsersBook WHERE key = :key")
     UsersBook findByKey(UsersBookKey key);
 
 //    @Query("DELETE FROM UsersBook " +

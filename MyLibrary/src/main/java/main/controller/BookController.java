@@ -7,6 +7,8 @@ import main.repository.*;
 import main.repository.UsersBookRepository;
 import main.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class MainController {
+public class BookController {
 
     @Autowired
     private UserRepository userRepository;
@@ -36,7 +38,7 @@ public class MainController {
         return "greeting";
     }
 
-    @GetMapping("/main")
+    @GetMapping("/books")
     public String main(
             @AuthenticationPrincipal User user,
             @RequestParam(required = false) String title,
@@ -47,20 +49,29 @@ public class MainController {
         List<Book> booksWhichUserIsReading = usersBookRepository.findByTitleOrAuthorAndList(title, author, user.getId(), ListsOfBooks.IS_READING);
         List<Book> booksWhichUserFinished = usersBookRepository.findByTitleOrAuthorAndList(title, author, user.getId(), ListsOfBooks.FINISHED);
 
+        model.addAttribute("user", user);
         model.addAttribute("wantToRead", booksWhichUserWantToRead);
         model.addAttribute("isReading", booksWhichUserIsReading);
         model.addAttribute("finished", booksWhichUserFinished);
-        return "main";
+        return "books";
     }
 
-    @PostMapping("/main/{id}")
+    @GetMapping("/books/{id}")
+    public String getBook(
+            @RequestParam int id,
+            Model model){
+        Book book = bookRepository.findById(id);
+        model.addAttribute("book", book);
+        return "book";
+    }
+
+    @PostMapping("/books/{id}")
     public String update(
             @AuthenticationPrincipal User user,
             @RequestParam int id,
-            @RequestParam String oldList,
             @RequestParam String newList){
         Book book = bookRepository.findById(id);
         bookService.changeList(book, user, newList);
-        return "redirect:/main";
+        return "redirect:/books";
     }
 }

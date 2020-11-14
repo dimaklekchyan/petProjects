@@ -60,4 +60,24 @@ public class UserService implements UserDetailsService {
 
         return true;
     }
+
+    public boolean changeData(User user, String username, String password){
+        boolean nameChanged = false;
+        boolean passwordChanged = false;
+
+        if(username != null && !username.isEmpty()){
+            user.setUsername(username);
+            nameChanged = true;
+        }
+        if(password != null && !password.isEmpty()){
+            user.setPassword(password);
+            passwordChanged = true;
+        }
+
+        if(nameChanged || passwordChanged){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

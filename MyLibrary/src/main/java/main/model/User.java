@@ -25,36 +25,12 @@ public class User implements UserDetails {
     private String activationCode;
 
     //Все книги юзера
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_books",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "book_id")}
-    )
-    private List<Book> allBooks;
-
-    //Книги, котороые хочется прочитать
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "books_which_users_want_to_read",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "book_id")}
-    )
-    private List<Book> booksWhichUserWantToRead;
-
-    //Книги юзера в процессе
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "books_which_users_are_reading",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "book_id")}
-    )
-    private List<Book> booksWhichUserIsReading;
-
-    //Прочитаныне книги юзера
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "books_which_users_finished",
-            joinColumns = {@JoinColumn(name = "user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "book_id")}
-    )
-    private List<Book> booksWhichUserFinished;
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "users_books",
+//            joinColumns = {@JoinColumn(name = "user_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "book_id")}
+//    )
+//    private List<Book> books;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))

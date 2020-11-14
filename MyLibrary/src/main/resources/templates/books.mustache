@@ -5,14 +5,16 @@
                 <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
                 <input type="submit" value="Выйти"/>
             </form>
-            <span><a href="/users">Users list</a></span>
+            <form method="get" action="/users/{{user.id}}">
+                <input type="submit" value="Профиль"/>
+            </form>
         </div>
         <div>
             <span><a href="/search">Поиск книг</a></span>
         </div>
 
         <div>Список книг</div>
-        <form method="get" action="/main">
+        <form method="get" action="/books">
             <input type="text" name="title" placeholder="Поиск по названию">
             <input type="text" name="author" placeholder="Поиск по автору">
             <button type="submit">Найти</button>
@@ -22,10 +24,11 @@
                 <div>Хочу прочитать</div>
                 {{#wantToRead}}
                     <div style="border-bottom: 1px solid black;">
-                        <span>{{title}}</span>
-                        -
-                        <span>{{author}}</span>
-                        <form method="post" action="/main/{{id}}">
+                        <form method="get" action="/books/{{id}}">
+                            <input type="hidden" name="id" value="{{id}}">
+                            <button type="submit">{{title}} - {{author}}</button>
+                        </form>
+                        <form method="post" action="/books/{{id}}">
                             <input type="hidden" name="id" value="{{id}}">
                             <input type="hidden" name="oldList" value="wantToRead">
                             <select name="newList">
@@ -44,10 +47,11 @@
                 <div>Читаю</div>
                 {{#isReading}}
                     <div style="border-bottom: 1px solid black;">
-                        <span>{{title}}</span>
-                        -
-                        <span>{{author}}</span>
-                        <form method="post" action="/main/{{id}}">
+                        <form method="get" action="/books/{{id}}">
+                            <input type="hidden" name="id" value="{{id}}">
+                            <button type="submit">{{title}} - {{author}}</button>
+                        </form>
+                        <form method="post" action="/books/{{id}}">
                             <input type="hidden" name="id" value="{{id}}">
                             <input type="hidden" name="oldList" value="isReading">
                             <select name="newList">
@@ -66,10 +70,11 @@
                 <div>Прочитал</div>
                 {{#finished}}
                     <div style="border-bottom: 1px solid black;">
-                        <span>{{title}}</span>
-                        -
-                        <span>{{author}}</span>
-                        <form method="post" action="/main/{{id}}">
+                        <form method="get" action="/books/{{id}}">
+                            <input type="hidden" name="id" value="{{id}}">
+                            <button type="submit">{{title}} - {{author}}</button>
+                        </form>
+                        <form method="post" action="/books/{{id}}">
                             <input type="hidden" name="id" value="{{id}}">
                             <input type="hidden" name="oldList" value="finished">
                             <select name="newList">

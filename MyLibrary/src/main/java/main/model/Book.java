@@ -20,33 +20,12 @@ public class Book {
     @Column(name="year_of_writing", nullable = true)
     private Date yearOfWriting;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "users_books",
-            joinColumns = {@JoinColumn(name = "book_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")}
-    )
-    private List<User> users;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "books_which_users_want_to_read",
-            joinColumns = {@JoinColumn(name = "book_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")}
-    )
-    private List<User> usersWhoWillRead;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "books_which_users_are_reading",
-            joinColumns = {@JoinColumn(name = "book_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")}
-    )
-    private List<User> usersWhoAreReading;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "books_which_users_finished",
-            joinColumns = {@JoinColumn(name = "book_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")}
-    )
-    private List<User> usersWhoFinished;
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "users_books",
+//            joinColumns = {@JoinColumn(name = "book_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+//    )
+//    private List<User> users;
 
     public Book() {
     }

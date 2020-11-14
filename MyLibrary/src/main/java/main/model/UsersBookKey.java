@@ -1,4 +1,4 @@
-package main.model.usersBook;
+package main.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

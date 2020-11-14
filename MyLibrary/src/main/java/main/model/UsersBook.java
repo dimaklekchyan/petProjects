@@ -1,7 +1,6 @@
-package main.model.usersBook;
+package main.model;
 
 import lombok.Data;
-import main.model.ListsOfBooks;
 
 import javax.persistence.*;
 import java.io.Serializable;
