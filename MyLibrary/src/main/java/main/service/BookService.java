@@ -30,16 +30,10 @@ public class BookService {
         return false;
     }
 
-    public boolean changeList(Book book, User user, String newList) {
+    public void changeList(Book book, User user, String newList) {
         UsersBook usersBook = usersBookRepository.findByKey(new UsersBookKey(book, user));
-        usersBookRepository.delete(usersBook);
-
-        if(usersBook != null){
-            usersBook.setList(getList(newList));
-            usersBookRepository.save(usersBook);
-            return true;
-        }
-        return false;
+        usersBook.setList(getList(newList));
+        usersBookRepository.save(usersBook);
     }
 
     public ListsOfBooks getList(String list){

@@ -1,5 +1,6 @@
 package main.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -25,7 +26,8 @@ public class User implements UserDetails {
     private String activationCode;
 
     //Все книги юзера
-//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JsonIgnore
+//    @ManyToMany(fetch = FetchType.EAGER)
 //    @JoinTable(name = "users_books",
 //            joinColumns = {@JoinColumn(name = "user_id")},
 //            inverseJoinColumns = {@JoinColumn(name = "book_id")}

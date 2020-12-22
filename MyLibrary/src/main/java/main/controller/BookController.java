@@ -2,13 +2,14 @@ package main.controller;
 
 import main.model.Book;
 import main.model.ListsOfBooks;
+import main.model.Note;
 import main.model.User;
-import main.repository.*;
+import main.repository.BookRepository;
+import main.repository.NoteRepository;
+import main.repository.UserRepository;
 import main.repository.UsersBookRepository;
 import main.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,8 @@ public class BookController {
     @Autowired
     private UsersBookRepository usersBookRepository;
     @Autowired
+    private NoteRepository noteRepository;
+    @Autowired
     private BookService bookService;
 
 
@@ -39,7 +42,7 @@ public class BookController {
     }
 
     @GetMapping("/books")
-    public String main(
+    public String getBooks(
             @AuthenticationPrincipal User user,
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String author,
@@ -62,16 +65,26 @@ public class BookController {
             Model model){
         Book book = bookRepository.findById(id);
         model.addAttribute("book", book);
+        model.addAttribute("notes", book.getNotes());
         return "book";
     }
 
-    @PostMapping("/books/{id}")
-    public String update(
+    @PostMapping("/books")
+    public String changeList(
             @AuthenticationPrincipal User user,
             @RequestParam int id,
             @RequestParam String newList){
         Book book = bookRepository.findById(id);
         bookService.changeList(book, user, newList);
         return "redirect:/books";
+    }
+
+    @PostMapping("/books/{id}")
+    public String sendNote(
+            @RequestParam int id,
+            @RequestParam String text){
+        Note note = new Note(text, bookRepository.findById(id));
+        noteRepository.save(note);
+        return "redirect:/books/{id}";
     }
 }

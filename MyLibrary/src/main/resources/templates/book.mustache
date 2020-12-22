@@ -6,7 +6,8 @@
 </head>
 <body>
     <div>{{book.title}} - {{book.author}}</div>
-    <form method="post" action="/books/{{book.id}}">
+    <!-- форма смены списка -->
+    <form method="post" action="/books">
         <input type="hidden" name="id" value="{{book.id}}">
         <input type="hidden" name="oldList" value="wantToRead">
         <select name="newList">
@@ -18,5 +19,14 @@
         <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
         <input type="submit" value="Изменить">
     </form>
+    <form method="post" action="/books/{{book.id}}">
+        <input type="hidden" name="id" value="{{book.id}}">
+        <input type="text" name="text" placeholder="Оставить комментарий (макс ??? символов)">
+        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+        <input type="submit" value="Отправить">
+    </form>
+    {{#notes}}
+        <div>{{text}}</div>
+    {{/notes}}
 </body>
 </html>

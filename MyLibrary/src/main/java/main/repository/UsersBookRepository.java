@@ -4,12 +4,12 @@ import main.model.Book;
 import main.model.ListsOfBooks;
 import main.model.UsersBook;
 import main.model.UsersBookKey;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface UsersBookRepository extends JpaRepository<UsersBook, UsersBookKey> {
+public interface UsersBookRepository extends CrudRepository<UsersBook, UsersBookKey> {
     List<UsersBook> findAll();
 
     UsersBook findByKey(UsersBookKey key);
